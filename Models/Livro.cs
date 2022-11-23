@@ -11,7 +11,9 @@ namespace BibliotecaEmprestimos.Models
         public int NumeroPag { get; set; }
         public int QuandidadeDisponivel { get; set; }
         public double PrecoUnidade { get; set; }
-        public List<Autor> Autores { get; set; }
+        public List<Autor> Autores { get; set; } = new();
+        public List<Emprestimo> Emprestimos { get; set; } = new();
+        public List<Leitor> Leitores { get; set; } = new();
     }
 
 }
