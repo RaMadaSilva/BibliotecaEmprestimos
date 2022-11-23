@@ -9,6 +9,8 @@ namespace BibliotecaEmprestimos.Models
         public Genero Genero { get; set; }
         public int AnoEdicao { get; set; }
         public int NumeroPag { get; set; }
+        public int QuandidadeDisponivel { get; set; }
+        public double PrecoUnidade { get; set; }
         public List<Autor> Autores { get; set; }
     }
 
