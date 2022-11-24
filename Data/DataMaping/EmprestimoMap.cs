@@ -24,6 +24,8 @@ namespace BibliotecaEmprestimos.Data.DataMaping
                 .IsRequired();
 
             //relacionamentos 
+            builder.HasOne(x => x.Leitor).WithMany(x => x.Emprestimos).HasConstraintName("FK_Emprestimo_LeitorId")
+                .HasForeignKey("LeitorId");
 
         }
     }
