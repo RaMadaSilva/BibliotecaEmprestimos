@@ -26,6 +26,27 @@ namespace BibliotecaEmprestimos.Data.DataMaping
             builder.Property("PrecoUnidade").HasColumnName("PrecoUnidade").HasColumnType("FLOAT")
                 .IsRequired();
 
+            //relacionamentos
+            builder.HasMany(x => x.Autores).WithMany(x => x.Livros).UsingEntity<Dictionary<string, object>>(
+                "LivroAutor", livro => livro.HasOne<Autor>().WithMany().HasForeignKey("AutorId")
+                .HasConstraintName("FK_Autor_Livro_AutorId"),
+                autor => autor.HasOne<Livro>().WithMany().HasForeignKey("LivroId")
+                .HasConstraintName("FK_Livro_Autor_LivroId")
+            );
+
+            builder.HasMany(x => x.Leitores).WithMany(x => x.Livros).UsingEntity<Dictionary<string, object>>(
+                "LeitorLivro", livro => livro.HasOne<Leitor>().WithMany().HasForeignKey("LeitorId")
+                    .HasConstraintName("FK_Leitor_Livro_LeitorId"),
+                leitor => leitor.HasOne<Livro>().WithMany().HasForeignKey("Livroid")
+                .HasConstraintName("FK_Leitor_Livro_LivroId")
+            );
+            builder.HasMany(x => x.Pagamentos).WithMany(x => x.Livros).UsingEntity<Dictionary<string, object>>(
+                "PagamentoLivro", livro => livro.HasOne<Pagamento>().WithMany().HasForeignKey("PagamentoIs")
+                .HasConstraintName("FK_Pagamento_Livro_PagamentoId"),
+                pagamento => pagamento.HasOne<Livro>().WithMany().HasForeignKey("LivroId")
+                .HasConstraintName("FK_Pagamento_Livro_LivroId")
+            );
+
 
         }
     }
