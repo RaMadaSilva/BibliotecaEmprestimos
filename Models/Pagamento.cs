@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace BibliotecaEmprestimos.Models
 {
@@ -10,7 +7,7 @@ namespace BibliotecaEmprestimos.Models
         public int Id { get; set; }
         public double Montante { get; set; }
         public Emprestimo Emprestimo { get; set; }
-        public List<Livro> Livros { get; set; }
+        public List<Livro> Livros { get; set; } = new();
 
     }
 }

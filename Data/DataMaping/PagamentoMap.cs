@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BibliotecaEmprestimos.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,7 +16,7 @@ namespace BibliotecaEmprestimos.Data.DataMaping
                  .IsRequired();
 
             //relacionamento
-            builder.HasOne(x => x.Emprestimo).WithOne(x => x.Pagamento).HasForeignKey("EmprestimoId")
+            builder.HasOne(x => x.Emprestimo).WithOne().HasForeignKey<Pagamento>("EmprestimoId")
                 .HasConstraintName("FK_Pagamento_Emprestimo_EmprestimoId");
         }
     }
