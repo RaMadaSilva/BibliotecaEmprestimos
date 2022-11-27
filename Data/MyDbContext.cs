@@ -7,10 +7,10 @@ namespace BibliotecaEmprestimos.Data
 {
     public class MyDbContext : DbContext
     {
-        public DbSet<Autor> Autores { get; set; }
-        public DbSet<Emprestimo> Emprestimos { get; set; }
-        public DbSet<Leitor> Leitores { get; set; }
-        public DbSet<Livro> Livros { get; set; }
+        public DbSet<Autor> Autores { get; set; } = null!;
+        public DbSet<Emprestimo> Emprestimos { get; set; } = null!;
+        public DbSet<Leitor> Leitores { get; set; } = null!;
+        public DbSet<Livro> Livros { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder option)
         {
