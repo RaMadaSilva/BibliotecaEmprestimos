@@ -1,4 +1,5 @@
 using BibliotecaEmprestimos.Data;
+using BibliotecaEmprestimos.Extencions;
 using BibliotecaEmprestimos.Models;
 using BibliotecaEmprestimos.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,11 @@ namespace BibliotecaEmprestimos.Controllers
             {
 
                 var leitores = await context.Leitores.AsNoTracking().ToListAsync();
-                return Ok(leitores);
+                return Ok(new ResultViewModel<List<Leitor>>(leitores));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"erro na ao buscar os leitores {ex.Message}");
+                return StatusCode(500, new ResultViewModel<Leitor>($"erro na ao buscar os leitores {ex.Message}"));
             }
         }
         [HttpGet]
@@ -33,7 +34,7 @@ namespace BibliotecaEmprestimos.Controllers
             {
                 var leitor = await context.Leitores.Where(x => x.Id == id).FirstOrDefaultAsync();
                 if (leitor == null)
-                    return NotFound();
+                    return NotFound(new ResultViewModel<Leitor>("Leitor não encontrado!"));
 
                 var model = new LeitorViewModel()
                 {
@@ -41,11 +42,11 @@ namespace BibliotecaEmprestimos.Controllers
                     DataNascimento = leitor.DataNascimento,
                     Email = leitor.Email
                 };
-                return Ok(model);
+                return Ok(new ResultViewModel<Leitor>(leitor));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"erro ao pegar um leitor pelo Id {ex.Message}");
+                return StatusCode(500, new ResultViewModel<Leitor>($"erro ao pegar um leitor pelo Id {ex.Message}"));
             }
 
         }
@@ -54,6 +55,9 @@ namespace BibliotecaEmprestimos.Controllers
         [Route("")]
         public async Task<IActionResult> PostLeitorAsync([FromBody] LeitorViewModel model, [FromServices] MyDbContext context)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(new ResultViewModel<Leitor>(ModelState.GetError()));
+
             try
             {
                 var leitor = new Leitor()
@@ -67,11 +71,11 @@ namespace BibliotecaEmprestimos.Controllers
                 await context.Leitores.AddAsync(leitor);
                 await context.SaveChangesAsync();
 
-                return Created($"v1/leitor/{leitor.Id}", leitor);
+                return Created($"v1/leitor/{leitor.Id}", new ResultViewModel<Leitor>(leitor));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erros ao criar o Leitor: {ex.Message}");
+                return StatusCode(500, new ResultViewModel<Leitor>($"Erros ao criar o Leitor: {ex.Message}"));
             }
 
         }
@@ -94,15 +98,14 @@ namespace BibliotecaEmprestimos.Controllers
                 context.Leitores.Update(leitor);
                 await context.SaveChangesAsync();
 
-                return Ok("leitor Actualizado com sucesso! ");
+                return Ok(new ResultViewModel<Leitor>(leitor));
 
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro ao Actualizar o leitor {ex.Message}");
+                return StatusCode(500, new ResultViewModel<Leitor>($"Erro ao Actualizar o leitor {ex.Message}"));
             }
         }
-
 
 
         [HttpDelete]
@@ -116,13 +119,12 @@ namespace BibliotecaEmprestimos.Controllers
                     return NotFound();
                 context.Leitores.Remove(leitor);
                 await context.SaveChangesAsync();
-                return Ok("Leitor Removido com sucesso!");
+                return Ok(new ResultViewModel<Leitor>(leitor, "Leitor Removido com sucesso!"));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"erro ao Apagar um leitor {ex.Message}");
+                return StatusCode(500, new ResultViewModel<Leitor>($"erro ao Apagar um leitor {ex.Message}"));
             }
-
         }
     }
 }

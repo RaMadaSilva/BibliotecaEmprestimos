@@ -6,7 +6,7 @@ namespace BibliotecaEmprestimos.Models
         public int Id { get; set; }
         public DateTime DataEprestimo { get; set; }
         public DateTime DataDevolucao { get; set; }
-        public Leitor Leitor { get; set; }
+        public Leitor Leitor { get; set; } = new();
         public List<Livro> Livros { get; set; } = new();
 
     }
